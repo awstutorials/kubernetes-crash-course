@@ -18,27 +18,27 @@ spec:
           valueFrom:
             configMapKeyRef:
               key: RDS_DB_NAME
-              name: todo-web-application-config
+              name: todo-web-application-config-1
         - name: RDS_HOSTNAME
           valueFrom:
             configMapKeyRef:
               key: RDS_HOSTNAME
-              name: todo-web-application-config
+              name: todo-web-application-config-1
         - name: RDS_PASSWORD
           valueFrom:
             secretKeyRef:
               key: RDS_PASSWORD
-              name: todo-web-application-secrets
+              name: todo-web-application-secrets-1
         - name: RDS_PORT
           valueFrom:
             configMapKeyRef:
               key: RDS_PORT
-              name: todo-web-application-config
+              name: todo-web-application-config-1
         - name: RDS_USERNAME
           valueFrom:
             configMapKeyRef:
               key: RDS_USERNAME
-              name: todo-web-application-config
+              name: todo-web-application-config-1
         image: in28min/todo-web-application-mysql:0.0.1-SNAPSHOT
         name: todo-web-application
         ports:

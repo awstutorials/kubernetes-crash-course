@@ -31,9 +31,9 @@ spec:
         - containerPort: 3306
         volumeMounts:
         - mountPath: /var/lib/mysql
-          name: mysql-database-data-volume
+          name: mysql-database-data-volume-1
       restartPolicy: Always
       volumes:
-      - name: mysql-database-data-volume
+      - name: mysql-database-data-volume-1
         persistentVolumeClaim:
-          claimName: mysql-database-data-volume
+          claimName: mysql-database-data-volume-1
