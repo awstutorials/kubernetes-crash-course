@@ -3,8 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: mysql-database-data-volume-1
-  name: mysql-database-data-volume-1
+    io.kompose.service: mysql-database-data-volume-3
+  name: mysql-database-data-volume-3
 spec:
   accessModes:
   - ReadWriteOnce
