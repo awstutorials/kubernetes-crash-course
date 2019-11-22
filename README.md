@@ -14,6 +14,8 @@ Do you want to join 300,000+ learners having Amazing Learning Experiences with i
 Look No Further!
 
 ```
+https://youtu.be/EXjkwzxdxi8
+
 brew update && brew install azure-cli
 
 az login
