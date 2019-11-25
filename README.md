@@ -13,6 +13,91 @@ Do you want to join 300,000+ learners having Amazing Learning Experiences with i
 
 Look No Further!
 
+```
+https://youtu.be/EXjkwzxdxi8
+
+brew update && brew install azure-cli
+
+az login
+az group create --name kubetutorialresourcegroup --location westeurope
+az aks create --resource-group kubetutorialresourcegroup --name ravikubecluster --node-count 2 --enable-addons monitoring --generate-ssh-keys
+az aks get-credentials --resource-group kubetutorialresourcegroup --name ravikubecluster
+
+Message: The subscription is not registered to use namespace {resource-provider-namespace}
+Enable devspaces
+Enable http routing
+
+cd 01-hello-world-rest-api
+kubectl create deployment hello-world-rest-api --image=in28min/hello-world-rest-api:0.0.1.RELEASE
+kubectl expose deployment hello-world-rest-api --type=LoadBalancer --port=8080
+
+cd 02-todo-web-application-h2
+kubectl create deployment todowebapp-h2 --image=in28min/todo-web-application-h2:0.0.1-SNAPSHOT
+kubectl expose deployment todowebapp-h2 --type=LoadBalancer --port=8080
+
+cd kubernetes-crash-course/03-todo-web-application-mysql/backup/02-final-backup-at-end-of-course
+kubectl apply -f mysql-database-data-volume-persistentvolumeclaim.yaml,mysql-deployment.yaml,mysql-service.yaml
+kubectl apply -f configmap.yaml
+kubectl create secret generic todo-web-application-secrets-1 --from-literal=RDS_PASSWORD=dummytodos
+kubectl apply -f todo-web-application-deployment.yaml,todo-web-application-service.yaml
+kubectl scale deployment todo-web-application --replicas=0
+
+cd 04-currency-exchange-microservice-basic
+kubectl apply -f deployment.yaml
+
+cd 05-currency-conversion-microservice-basic
+kubectl apply -f deployment.yaml
+install ingress controller and get the ip address
+kubectl apply -f ingress.yaml
+
+http://ipaddress/currency-conversion/from/EUR/to/INR/quantity
+
+ingress controller installation
+helm install stable/nginx-ingress \
+    --namespace default \
+    --set controller.replicaCount=1 \
+    --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \
+    --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux
+
+cd 06-currency-conversion-microservice-cloud
+kubectl apply -f deployment.yaml
+kubectl apply -f 02-rbac.yaml
+
+Install Istio
+==============
+kubectl create namespace istio-system
+curl -L https://git.io/getLatestIstio | ISTIO_VERSION=1.2.2 sh -
+for i in install/kubernetes/helm/istio-init/files/crd*yaml; do kubectl apply -f $i; done
+helm template install/kubernetes/helm/istio --name istio --set global.mtls.enabled=false --set tracing.enabled=true --set kiali.enabled=true --set grafana.enabled=true --namespace istio-system > istio.yaml
+kubectl apply -f istio.yaml
+kubectl label namespace default istio-injection=enabled
+
+kubectl get secret -n istio-system kiali
+kubectl create secret generic kiali -n istio-system --from-literal=username=admin --from-literal=passphrase=admin
+
+kubectl port-forward \
+    $(kubectl get pod -n istio-system -l app=kiali \
+    -o jsonpath='{.items[0].metadata.name}') \
+    -n istio-system 20001
+http://localhost:20001
+
+kubectl -n istio-system port-forward \
+    $(kubectl -n istio-system get pod -l app=grafana \
+    -o jsonpath='{.items[0].metadata.name}') 3000
+http://localhost:3000
+
+kubectl port-forward -n istio-system \
+    $(kubectl get pod -n istio-system -l app=jaeger \
+    -o jsonpath='{.items[0].metadata.name}') 16686
+http://localhost:16686
+
+
+
+az aks scale --resource-group ravikuberesourcegroup --name ravikubecluster --node-count 2 --nodepool-name nodepool1
+
+az aks use-dev-spaces -g kubetutorialresourcegroup -n ravikubecluster
+```
+
 ## First Commands
 
 ```

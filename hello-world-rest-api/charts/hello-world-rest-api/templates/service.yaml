@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "hello-world-rest-api.fullname" . }}
+  labels:
+    app: {{ template "hello-world-rest-api.name" . }}
+    chart: {{ template "hello-world-rest-api.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ template "hello-world-rest-api.name" . }}
+    release: {{ .Release.Name }}
