@@ -4,7 +4,6 @@
 
 ```export AWS_DEFAULT_PROFILE=<profile_name>```
 
-
 **Prerequisites**
 1. Install eksctl
  - Install the Weaveworks Homebrew tap.
@@ -28,24 +27,29 @@ eksctl version
 **How to create Cluster**
 ```
 eksctl create cluster \
-  --name test \
-  --version 1.14 \
-  --region eu-west-1 \
-  --nodegroup-name standard-workers \
-  --node-type t3.medium \
-  --nodes 3 \
-  --nodes-min 1 \
-  --nodes-max 4 \
-  --node-ami auto
+--name prod \
+--version 1.14 \
+--region eu-west-1 \
+--nodegroup-name standard-prd-workers \
+--node-type t3.medium \
+--nodes 3 \
+--nodes-min 1 \
+--nodes-max 7 \
+--node-ami auto \
+--managed \
+--asg-access
 ```
-
 
 ```eksctl create cluster --name test-auto --version 1.14 --without-nodegroup```
 - Verify EKS Clusters. Cluster provisioning usually takes between 10 and 15 minutes. When your cluster is ready, test that your kubectl configuration is correct.
 ```
 kubectl get svc
 ```
+* Use the AWS CLI update-kubeconfig command to create or update your kubeconfig for your cluster.
 
+```
+aws eks --region region update-kubeconfig --name cluster_name
+```
 **Metrics Server Installation Procedure**
 ```
 DOWNLOAD_URL=$(curl --silent "https://api.github.com/repos/kubernetes-sigs/metrics-server/releases/latest" | jq -r .tarball_url)
@@ -312,7 +316,45 @@ kubectl port-forward -n istio-system \
 http://localhost:16686
 ```
 
+
+**Create Cluster Autoscaler**
+
+1. Deploy the Cluster Autoscaler to your cluster with the following command.
+```
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/autoscaler/master/cluster-autoscaler/cloudprovider/aws/examples/cluster-autoscaler-autodiscover.yaml
+```
+2. Add the cluster-autoscaler.kubernetes.io/safe-to-evict annotation to the deployment with the following command.
+```
+kubectl -n kube-system annotate deployment.apps/cluster-autoscaler cluster-autoscaler.kubernetes.io/safe-to-evict="false"
+```
+3.Edit the Cluster Autoscaler deployment with the following command.
+```
+kubectl -n kube-system edit deployment.apps/cluster-autoscaler
+```
+    Edit the cluster-autoscaler container command to replace <YOUR CLUSTER NAME> with your cluster's name, and add the following options.
+    * --balance-similar-node-groups
+    * --skip-nodes-with-system-pods=false
+```
+    spec:
+      containers:
+      - command:
+        - ./cluster-autoscaler
+        - --v=4
+        - --stderrthreshold=info
+        - --cloud-provider=aws
+        - --skip-nodes-with-local-storage=false
+        - --expander=least-waste
+        - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/<YOUR CLUSTER NAME>
+        - --balance-similar-node-groups
+        - --skip-nodes-with-system-pods=false
+```
+4. Set the Cluster Autoscaler image tag to the version. Open the Cluster Autoscaler [releases](https://github.com/kubernetes/autoscaler/releases) page in a web browser and find the Cluster Autoscaler version that matches your cluster's Kubernetes major and minor version
+```
+kubectl -n kube-system set image deployment.apps/cluster-autoscaler cluster-autoscaler=k8s.gcr.io/cluster-autoscaler:v1.14.6
+```
+
 **Delete Cluster**
+
 1. First delete any service which has external ip address/Load Balance
 ```
 kubectl get svc --all-namespaces
@@ -323,11 +365,7 @@ Delete the cluster and its associated worker nodes with the following command, r
 ```
 eksctl delete cluster --name prod
 ```
-
-   
        
-**Create Cluster Autoscaler**
-
 rolearn: arn:aws:iam::182388080935:role/eksctl-test-nodegroup-standard-wo-NodeInstanceRole-1WSUER18EFW02
 
 eksctl-test-nodegroup-standard-wo-NodeInstanceRole-UHWEGLWODWUJ
