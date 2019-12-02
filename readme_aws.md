@@ -35,7 +35,6 @@ eksctl create cluster \
 --nodes 3 \
 --nodes-min 1 \
 --nodes-max 7 \
---node-ami auto \
 --managed \
 --asg-access
 ```
@@ -315,6 +314,15 @@ kubectl port-forward -n istio-system \
     -o jsonpath='{.items[0].metadata.name}') 16686
 http://localhost:16686
 ```
+Verify URLS:
+```
+http://<lburl>/hello-world
+http://<lburl>/currency-conversion/from/EUR/to/INR/quantity/29987
+http://<lburl>/currency-exchange/from/EUR/to/INR
+```
+
+Verify Jagger by creating some load
+```watch -n 0.1 curl http://a975654c512ae11ea998202d1279c960-877389647.eu-west-1.elb.amazonaws.com//currency-conversion/from/EUR/to/INR/quantity/29987```
 
 
 **Create Cluster Autoscaler**
@@ -352,6 +360,14 @@ kubectl -n kube-system edit deployment.apps/cluster-autoscaler
 ```
 kubectl -n kube-system set image deployment.apps/cluster-autoscaler cluster-autoscaler=k8s.gcr.io/cluster-autoscaler:v1.14.6
 ```
+5. After you have deployed the Cluster Autoscaler, you can view the logs and verify that it is monitoring your cluster load.
+   View your Cluster Autoscaler logs with the following command.
+   ```
+   kubectl -n kube-system logs -f deployment.apps/cluster-autoscaler
+   ```
+
+**Delete Resources belong to namespace**
+```kubectl delete all --all -n {namespace}```
 
 **Delete Cluster**
 
@@ -360,7 +376,7 @@ kubectl -n kube-system set image deployment.apps/cluster-autoscaler cluster-auto
 kubectl get svc --all-namespaces
 kubectl delete svc service-name
 ```
-Delete the cluster and its associated worker nodes with the following command, replacing prod with your cluster name.
+2. Delete the cluster and its associated worker nodes with the following command, replacing prod with your cluster name.
 
 ```
 eksctl delete cluster --name prod
