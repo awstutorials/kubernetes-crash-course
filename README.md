@@ -20,7 +20,17 @@ brew update && brew install azure-cli
 
 az login
 az group create --name kubetutorialresourcegroup --location westeurope
-az aks create --resource-group kubetutorialresourcegroup --name ravikubecluster --node-count 2 --enable-addons monitoring --generate-ssh-keys
+
+az ad sp create-for-rbac --skip-assignment --name myAKSClusterServicePrincipal
+{
+  "appId": "c1c31699-9ffe-44a8-a5f8-4a62791777ed",
+  "displayName": "myAKSClusterServicePrincipal",
+  "name": "http://myAKSClusterServicePrincipal",
+  "password": "dc8e6933-2a4c-49f8-8077-66e1ed1febd4",
+  "tenant": "0fa18dc3-e9da-4eb0-9515-c868593431a5"
+}
+
+az aks create --resource-group kubetutorialresourcegroup --name ravikubecluster --node-count 2 --enable-addons monitoring --generate-ssh-keys --service-principal <appId> --client-secret  <password>
 az aks get-credentials --resource-group kubetutorialresourcegroup --name ravikubecluster
 
 Message: The subscription is not registered to use namespace {resource-provider-namespace}
