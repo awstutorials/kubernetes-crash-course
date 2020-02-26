@@ -52,22 +52,32 @@ kubectl create secret generic todo-web-application-secrets-1 --from-literal=RDS_
 kubectl apply -f todo-web-application-deployment.yaml,todo-web-application-service.yaml
 kubectl scale deployment todo-web-application --replicas=0
 
+Azure cloud shell
+    update kube config by running this command
+    az aks get-credentials --resource-group <resource groupname> --name <clustername>
+    if you get error that could be because you may be using different subscription. 
+    az account list // list the subscription and set the right subscription
+    az account set --subscription 9c23c709-cc67-4bc7-80ff-a65985cb3bfb
+    az aks get-credentials --resource-group <resource groupname> --name <clustername>
+
+    helm client by default installed in the azure cloud shell. No need to run helm-tiller.sh
+    setup the repo
+    helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+
+    helm install stable/nginx-ingress     
+    --namespace default     
+    --set controller.replicaCount=1     
+    --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux     
+    --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux 
+    --generate-name //this generate-name is a new flag to generate name for nginx-ingress.
+
 cd 04-currency-exchange-microservice-basic
 kubectl apply -f deployment.yaml
 
 cd 05-currency-conversion-microservice-basic
 kubectl apply -f deployment.yaml
-install ingress controller and get the ip address
 kubectl apply -f ingress.yaml
 
-http://ipaddress/currency-conversion/from/EUR/to/INR/quantity
-
-ingress controller installation
-helm install stable/nginx-ingress \
-    --namespace default \
-    --set controller.replicaCount=1 \
-    --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \
-    --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux
 
 cd 06-currency-conversion-microservice-cloud
 kubectl apply -f deployment.yaml
