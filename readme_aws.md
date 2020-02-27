@@ -294,6 +294,22 @@ kubectl apply -f deployment.yaml
 kubectl apply -f 02-rbac.yaml
 ```
 
+**Application and Cluster Logging**
+
+Logging is implemented via EFK Elastic Search - FluentD - Kibana
+
+- Installation Steps
+- Video Link : Chapter 4-k8s - Time from 30:00 (10 mins)
+- Navigate to directory fluentd-elasticsearch and run
+```kubectl apply -f .```
+
+Get Kibana URL
+
+```kubectl get svc -n kube-system```
+
+You should see kiabana-logging - Copy Load balancer url along with port : 5601
+
+
 **Install Istio**
 ```
 kubectl create namespace istio-system
@@ -373,6 +389,7 @@ kubectl -n kube-system set image deployment.apps/cluster-autoscaler cluster-auto
    ```
 
 **Delete Resources belong to namespace**
+
 ```kubectl delete all --all -n {namespace}```
 
 **Delete Cluster**
