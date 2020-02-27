@@ -299,16 +299,26 @@ kubectl apply -f 02-rbac.yaml
 Logging is implemented via EFK Elastic Search - FluentD - Kibana
 
 - Installation Steps
-- Video Link : Chapter 4-k8s - Time from 30:00 (10 mins)
+- Video Link : [Chapter 4-k8s](https://www.youtube.com/watch?v=K3OgTEUJQ14) - Time from 30:00 (10 mins)
 - Navigate to directory fluentd-elasticsearch and run
-```kubectl apply -f .```
+```
+kubectl apply -f .
+```
 
-Get Kibana URL
+##Get Kibana URL
 
-```kubectl get svc -n kube-system```
+Logging - CloudWatch
+
+```
+aws eks --region region-code update-cluster-config --name prod \
+--logging '{"clusterLogging":[{"types":["api","audit","authenticator","controllerManager","scheduler"],"enabled":true}]}'
+```
+
+```
+kubectl get svc -n kube-system
+```
 
 You should see kiabana-logging - Copy Load balancer url along with port : 5601
-
 
 **Install Istio**
 ```
@@ -395,10 +405,12 @@ kubectl -n kube-system set image deployment.apps/cluster-autoscaler cluster-auto
 **Delete Cluster**
 
 1. First delete any service which has external ip address/Load Balance
+
 ```
 kubectl get svc --all-namespaces
 kubectl delete svc service-name
 ```
+
 2. Delete the cluster and its associated worker nodes with the following command, replacing prod with your cluster name.
 
 ```
