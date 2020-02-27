@@ -296,7 +296,7 @@ kubectl apply -f 02-rbac.yaml
 
 ## Application and Cluster Logging
 
-Logging is implemented via EFK Elastic Search - FluentD - Kibana
+Logging is implemented via EFK (Elastic Search - FluentD - Kibana)
 
 - Installation Steps
 - Video Link : [Chapter 4-k8s](https://www.youtube.com/watch?v=K3OgTEUJQ14) - Time from 30:00 (10 mins)
@@ -347,7 +347,9 @@ kubectl port-forward -n istio-system \
     -o jsonpath='{.items[0].metadata.name}') 16686
 http://localhost:16686
 ```
+
 Verify URLS:
+
 ```
 http://<lburl>/hello-world
 http://<lburl>/currency-conversion/from/EUR/to/INR/quantity/29987
@@ -355,7 +357,10 @@ http://<lburl>/currency-exchange/from/EUR/to/INR
 ```
 
 Verify Jagger by creating some load
-```watch -n 0.1 curl http://a975654c512ae11ea998202d1279c960-877389647.eu-west-1.elb.amazonaws.com//currency-conversion/from/EUR/to/INR/quantity/29987```
+
+```
+watch -n 0.1 curl http://a975654c512ae11ea998202d1279c960-877389647.eu-west-1.elb.amazonaws.com//currency-conversion/from/EUR/to/INR/quantity/29987
+```
 
 
 **Create Cluster Autoscaler**
