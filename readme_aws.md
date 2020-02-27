@@ -302,7 +302,7 @@ Logging is implemented via EFK (Elastic Search - FluentD - Kibana)
 - Video Link : [Chapter 4-k8s](https://www.youtube.com/watch?v=K3OgTEUJQ14) - Time from 30:00 (10 mins)
 - Navigate to directory fluentd-elasticsearch and run
 ```
-kub ectl apply -f .
+kubectl apply -f .
 ```
 
 **Get Kibana URL**
