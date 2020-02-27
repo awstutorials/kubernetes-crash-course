@@ -305,7 +305,7 @@ Logging is implemented via EFK Elastic Search - FluentD - Kibana
 kub ectl apply -f .
 ```
 
-** Get Kibana URL **
+**Get Kibana URL**
 ```
 kubectl get svc -n kube-system
 ```
