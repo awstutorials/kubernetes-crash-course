@@ -211,7 +211,7 @@ kubectl delete all -l app=<app_name>
    Create an IAM policy called ALBIngressControllerIAMPolicy for your worker node instance profile that allows the ALB Ingress Controller to make calls to AWS APIs on your behalf. Use the following AWS CLI commands to create the IAM policy in your AWS account
    a. Download the policy document from GitHub.
    ```
-curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.3/docs/examples/iam-policy.json
+    curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.3/docs/examples/iam-policy.json
    ```
 
    b. Create the policy.
@@ -222,7 +222,9 @@ curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-contro
    ```
   c. Get the IAM role name for your worker nodes. Use the following command to print the aws-auth configmap.
   
-  ```kubectl -n kube-system describe configmap aws-auth```
+  ```
+  kubectl -n kube-system describe configmap aws-auth
+  ```
      
   d. Attach the new ALBIngressControllerIAMPolicy IAM policy to each of the worker node IAM roles you identified earlier with the following command.
   
