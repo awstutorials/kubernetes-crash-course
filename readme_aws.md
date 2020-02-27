@@ -294,7 +294,7 @@ kubectl apply -f deployment.yaml
 kubectl apply -f 02-rbac.yaml
 ```
 
-**Application and Cluster Logging**
+## Application and Cluster Logging
 
 Logging is implemented via EFK Elastic Search - FluentD - Kibana
 
@@ -302,10 +302,10 @@ Logging is implemented via EFK Elastic Search - FluentD - Kibana
 - Video Link : [Chapter 4-k8s](https://www.youtube.com/watch?v=K3OgTEUJQ14) - Time from 30:00 (10 mins)
 - Navigate to directory fluentd-elasticsearch and run
 ```
-kubectl apply -f .
+kub ectl apply -f .
 ```
 
-##Get Kibana URL
+** Get Kibana URL **
 ```
 kubectl get svc -n kube-system
 ```
