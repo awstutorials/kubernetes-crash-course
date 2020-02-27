@@ -312,7 +312,7 @@ kubectl get svc -n kube-system
 
 You should see kiabana-logging - Copy Load balancer url along with port : 5601
 
-## Streamming Logs - CloudWatch
+## Streaming Logs - CloudWatch
 
 ```
 aws eks --region region-code update-cluster-config --name prod \
