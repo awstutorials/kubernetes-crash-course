@@ -306,19 +306,20 @@ kubectl apply -f .
 ```
 
 ##Get Kibana URL
-
-Logging - CloudWatch
-
-```
-aws eks --region region-code update-cluster-config --name prod \
---logging '{"clusterLogging":[{"types":["api","audit","authenticator","controllerManager","scheduler"],"enabled":true}]}'
-```
-
 ```
 kubectl get svc -n kube-system
 ```
 
 You should see kiabana-logging - Copy Load balancer url along with port : 5601
+
+## Streamming Logs - CloudWatch
+
+```
+aws eks --region region-code update-cluster-config --name prod \
+--logging '{"clusterLogging":[{"types":["api","audit","authenticator","controllerManager","scheduler"],"enabled":true}]}'
+```
+Note: When you use Amazon EKS control plane logging, you're charged standard Amazon EKS pricing for each cluster that you run. You are charged the standard CloudWatch Logs data ingestion and storage costs for any logs sent to CloudWatch Logs from your clusters. You are also charged for any AWS resources, such as Amazon EC2 instances or Amazon EBS volumes, that you provision as part of your cluster.
+
 
 **Install Istio**
 ```
