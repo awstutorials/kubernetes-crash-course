@@ -5,15 +5,17 @@
 ```export AWS_DEFAULT_PROFILE=<profile_name>```
 
 **Prerequisites**
+0. Install aws cli latest version
+ - [Install/Upgrade cli](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-mac.html#cliv2-mac-install-cmd)
 1. Install eksctl
  - Install the Weaveworks Homebrew tap.
-```
-brew tap weaveworks/tap
-```
+    ```
+    brew tap weaveworks/tap
+    ```
 2. Install or upgrade eksctl
-```
-brew install weaveworks/tap/eksctl
-```
+    ```
+    brew install weaveworks/tap/eksctl
+    ```
 - For Upgrade
 ```
 brew upgrade eksctl && brew link --overwrite eksctl
@@ -44,6 +46,10 @@ eksctl create cluster \
 ```
 kubectl get svc
 ```
+    If you receive the error "aws-iam-authenticator": executable file not found in $PATH, your kubectl isn't configured for Amazon EKS. For more information, see [Installing aws-iam-authenticator](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html).
+
+    If you receive any other authorization or resource type errors, see [Unauthorized or Access Denied (kubectl)](https://docs.aws.amazon.com/eks/latest/userguide/troubleshooting.html#unauthorized) in the troubleshooting section.
+
 * Use the AWS CLI update-kubeconfig command to create or update your kubeconfig for your cluster.
 
 ```
